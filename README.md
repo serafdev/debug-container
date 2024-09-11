@@ -1,3 +1,5 @@
+__PLEASE USE THE ORIGINAL REPO I FORKED FROM, I'M MAKING A LOT OF RANDOM MODIFICATIONS AND I DO NOT GUARANTEE SECURITY OR STABILITY__
+
 # Debug-Container
 
 This container can be thought of as the administrator’s shell. Many of the debugging tools (such as ping, traceroute, and mtr) and man pages that an administrator might use to diagnose problems on the host are in this container.
