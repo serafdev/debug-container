@@ -1,0 +1,19 @@
+{
+  "plugins": [
+    "git-tag"
+  ],
+  "owner": "serafdev",
+  "repo": "debug-container",
+  "name": "SBOT",
+  "email": "no-reply@mail.seraf.dev",
+  "noDefaultLabels": true,
+  "labels": [
+    {
+      "name": "release",
+      "changelogTitle": "👾 Release",
+      "description": "New Release, only Bumping the PATCH level Forever",
+      "releaseType": "patch",
+      "color": "#870048"
+    }
+  ]
+}
