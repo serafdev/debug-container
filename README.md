@@ -1,9 +1,5 @@
 # Debug-Container
 
-[![Docker Repository on Quay](https://quay.io/repository/tw_pichuang/debug-container/status "Docker Repository on Quay")](https://quay.io/repository/tw_pichuang/debug-container)
-
-[![OpenSSF - Scorecard supply-chain security](https://github.com/pichuang/debug-container/actions/workflows/scorecard.yml/badge.svg)](https://github.com/pichuang/debug-container/actions/workflows/scorecard.yml)
-
 This container can be thought of as the administrator’s shell. Many of the debugging tools (such as ping, traceroute, and mtr) and man pages that an administrator might use to diagnose problems on the host are in this container.
 
 - Networking-related commands:
@@ -21,14 +17,14 @@ This container can be thought of as the administrator’s shell. Many of the deb
 
 ## Download
 ```
-docker pull ghcr.io/pichuang/debug-container:master
+docker pull ghcr.io/serafdev/debug-container:v0.0.1
 ```
 
 ## How to use `debug-container` on specific hosts?
 
 1. Bridge Mode (Container on OS):
 ```bash
-docker run -it --rm --name debug-container ghcr.io/pichuang/debug-container:master
+docker run -it --rm --name debug-container ghcr.io/serafdev/debug-container:v0.0.1
 ```
 
 2. Host Mode (Container within OS):
@@ -38,19 +34,19 @@ docker run -it --rm --name debug --privileged \
        -e NAME=debug-container -e IMAGE=pichuang/debug-container \
        -v /run:/run -v /var/log:/var/log \
        -v /etc/localtime:/etc/localtime -v /:/host \
-       ghcr.io/pichuang/debug-container:master
+       ghcr.io/serafdev/debug-container:v0.0.1
 ```
 
 3. Container Mode (Bridge another container)
 ```
-docker run -it --rm --name debug-contaienr --net container:<container_name> ghcr.io/pichuang/debug-container:master
+docker run -it --rm --name debug-contaienr --net container:<container_name> ghcr.io/serafdev/debug-container:v0.0.1
 ```
 
 ## How to use `debug-container` on Native Kubernetes/Tanzu Kubernetes Grid Cluster/Azure Kubernetes Service?
 
 1. Namespace Level Debugging: Running one Pod in namespace and `any node`
 ```bash
-kubectl run -n default debug-container --restart=Never --rm -i --tty --image ghcr.io/pichuang/debug-container:master -- /bin/bash
+kubectl run -n sina-prod debug-container --restart=Never --rm -i --tty --image ghcr.io/serafdev/debug-container:v0.0.1 -- /bin/bash
 ```
 
 2. Namespace Level Debugging: Running one Pod in namespace and `specific node`
@@ -63,17 +59,17 @@ aks-agentpool-40137516-vmss000001   Ready    agent   82m   v1.22.11
 aks-agentpool-40137516-vmss000002   Ready    agent   82m   v1.22.11
 
 # Run the command
-kubectl run -n default debug-container --restart=Never --rm -i --tty --overrides='{ "apiVersion": "v1", "spec": {"kubernetes.io/hostname":"aks-agentpool-40137516-vmss000002"}}' --image ghcr.io/pichuang/debug-container:master -- /bin/bash
+kubectl run -n default debug-container --restart=Never --rm -i --tty --overrides='{ "apiVersion": "v1", "spec": {"kubernetes.io/hostname":"aks-agentpool-40137516-vmss000002"}}' --image ghcr.io/serafdev/debug-container:v0.0.1 -- /bin/bash
 ```
 
 3. Node Level Debugging: Running one Pod on `specific node`
 ```bash
-kubectl run -n default debug-container --image ghcr.io/pichuang/debug-container:master \
+kubectl run -n default debug-container --image ghcr.io/serafdev/debug-container:v0.0.1 \
   --restart=Never -it --attach --rm \
   --overrides='{ "apiVersion": "v1", "spec": { "nodeSelector":{"kubernetes.io/hostname":"aks-agentpool-40137516-vmss000002"}, "hostNetwork": true}}' -- /bin/bash
 
 # or
-$ kubectl debug node/aks-agentpool-40137516-vmss000002 -it --image=ghcr.io/pichuang/debug-container:master -- /bin/bash
+$ kubectl debug node/aks-agentpool-40137516-vmss000002 -it --image=ghcr.io/serafdev/debug-container:v0.0.1 -- /bin/bash
 Creating debugging pod node-debugger-aks-agentpool-40137516-vmss000002-psvms with container debugger on node aks-agentpool-40137516-vmss000002.
 If you don't see a command prompt, try pressing enter.
 
@@ -87,14 +83,14 @@ root [ / ]# cat /etc/os-release | head -n 2
 1. Namespace Level Debugging: Running one Pod in project and `any node`
 ```bash
 oc project <PROJECT NAME>
-oc run ocp-debug-container --image ghcr.io/pichuang/debug-container:master \
+oc run ocp-debug-container --image ghcr.io/serafdev/debug-container:v0.0.1 \
    --restart=Never --attach -i --tty --rm
 ```
 
 2. Namespace Level Debugging: Running one Pod in project and `specific node`
 ```bash
 oc project <PROJECT NAME>
-oc run ocp-debug-container --image ghcr.io/pichuang/debug-container:master \
+oc run ocp-debug-container --image ghcr.io/serafdev/debug-container:v0.0.1 \
    --restart=Never --attach -i --tty --rm \
    --overrides='{ "apiVersion": "v1", "spec": { "kubernetes.io/hostname":"compute-1"}}}'
 ```
@@ -104,7 +100,7 @@ oc run ocp-debug-container --image ghcr.io/pichuang/debug-container:master \
 
 ```bash
 oc project <PROJECT NAME>
-oc run ocp-debug-container --image ghcr.io/pichuang/debug-container:master \
+oc run ocp-debug-container --image ghcr.io/serafdev/debug-container:v0.0.1 \
   --restart=Never -it --attach --rm \
   --overrides='{ "apiVersion": "v1", "spec": { "nodeSelector":{"kubernetes.io/hostname":"compute-1"}, "hostNetwork": true}}'
 ```
@@ -131,7 +127,7 @@ metadata:
   name: ocp-debug-container
 spec:
   containers:
-  - image: ghcr.io/pichuang/debug-container:master
+  - image: ghcr.io/serafdev/debug-container:v0.0.1
     name: ocp-debug-container
     command: [ "/bin/bash", "-c", "--" ]
     args: [ "while true; do sleep 30; done;" ]
